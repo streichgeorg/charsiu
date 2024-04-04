@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
 import re
 import numpy as np
 from itertools import groupby, chain
-import soundfile as sf
-import librosa.core
 import unicodedata
 from builtins import str as unicode
 from nltk.tokenize import TweetTokenizer
@@ -14,10 +11,7 @@ word_tokenize = TweetTokenizer().tokenize
 
 from g2p_en import G2p
 from g2p_en.expand import normalize_numbers 
-from g2pM import G2pM
 from transformers import Wav2Vec2CTCTokenizer,Wav2Vec2FeatureExtractor, Wav2Vec2Processor
-
-
 
 class CharsiuPreprocessor:
     
@@ -70,6 +64,9 @@ class CharsiuPreprocessor:
         
     
     def audio_preprocess(self,audio,sr=16000):
+        import soundfile as sf
+        import librosa.core
+
         '''
         Load and normalize audio
         If the sampling rate is incompatible with models, the input audio will be resampled.
@@ -105,7 +102,6 @@ English g2p processor
 class CharsiuPreprocessor_en(CharsiuPreprocessor):
     
     def __init__(self):
-        
         tokenizer = Wav2Vec2CTCTokenizer.from_pretrained('charsiu/tokenizer_en_cmu')
         feature_extractor = Wav2Vec2FeatureExtractor(feature_size=1, sampling_rate=16000, padding_value=0.0, do_normalize=True, return_attention_mask=False)
         self.processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tokenizer)
@@ -258,6 +254,8 @@ Mandarin g2p processor
 class CharsiuPreprocessor_zh(CharsiuPreprocessor_en):
 
     def __init__(self):
+        from g2pM import G2pM
+
         tokenizer = Wav2Vec2CTCTokenizer.from_pretrained('charsiu/tokenizer_zh_pinyin')
         feature_extractor = Wav2Vec2FeatureExtractor(feature_size=1, sampling_rate=16000, padding_value=0.0, do_normalize=True, return_attention_mask=False)
         self.processor = Wav2Vec2Processor(feature_extractor=feature_extractor, tokenizer=tokenizer)

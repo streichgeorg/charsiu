@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -13,7 +11,6 @@ from transformers.modeling_outputs import CausalLMOutput, MaskedLMOutput
 from transformers import BertForMaskedLM, BertConfig
 
 from torch.nn.utils.rnn import pack_padded_sequence,pad_packed_sequence
-
 
 class ForwardSumLoss(torch.nn.Module):
     '''
